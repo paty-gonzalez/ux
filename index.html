@@ -9,7 +9,7 @@
   color-scheme:light;
   --wall:#FFF4E6; --shelf:#FFFFFF; --ink:#2A1A12; --muted:#6B5446; --line:#EBD7C2;
   --rosa:#D6006F; --turquesa:#00897B; --amarillo:#F5B800; --naranja:#C94F00; --verde:#2E8B3E; --morado:#7B2CBF;
-  --kraft:#C99A62; --kraftInk:#3B2814; --drop:#FFE7C7;
+  --kraft:#C99A62; --kraftInk:#3B2814; --drop:#FFE7C7; --paper:#FFFBEA; --soft:#FFE7C7;
   --display:"Bungee","Arial Black",Impact,sans-serif; --body:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
@@ -168,7 +168,7 @@ input[type=text]{font:inherit;padding:8px 12px;border:2px solid var(--ink);borde
     <button class="tab" role="tab" id="tab-busca" aria-controls="busca" aria-selected="false" type="button" style="--c:var(--turquesa)"><span class="k">2</span><span>Busca<small>Tree testing</small></span></button>
   </div>
   <section class="pane" id="acomoda" role="tabpanel" aria-labelledby="tab-acomoda">
-    <p class="lead">Imagina que vas a pedir a la tienda del campus desde una app. <b>Arrastra cada producto al pasillo donde lo buscarías.</b> Si no cabe en ninguno, échalo a la caja de dudas. No hay respuestas correctas: nos interesa cómo lo piensas tú.</p>
+    <p class="lead">La tienda del campus va a tener app para pedir. Antes de diseñarla, queremos saber cómo organizarías su menú. <b>Arrastra cada producto a la sección del menú donde lo buscarías.</b> Si no cabe en ninguna, échalo a la caja de dudas. No hay respuestas correctas: nos interesa cómo lo piensas tú.</p>
 
   <div class="bar">
     <div class="who">
@@ -178,11 +178,11 @@ input[type=text]{font:inherit;padding:8px 12px;border:2px solid var(--ink);borde
     <div class="progress" id="progress" aria-live="polite"></div>
   </div>
 
-  <p class="hint">También puedes tocar un producto y luego el letrero del pasillo. Toca un producto ya acomodado para regresarlo.</p>
+  <p class="hint">También puedes tocar un producto y luego el nombre de la sección. Toca un producto ya acomodado para regresarlo.</p>
 
   <section class="pool" id="pool" aria-label="Productos sin acomodar"></section>
 
-  <section class="aisles" id="aisles" aria-label="Pasillos"></section>
+  <section class="aisles" id="aisles" aria-label="Secciones del menú"></section>
 
   <div class="bar">
     <button class="btn ghost" id="reset" type="button">Empezar de nuevo</button>
@@ -202,7 +202,7 @@ input[type=text]{font:inherit;padding:8px 12px;border:2px solid var(--ink);borde
 
   </section>
   <section class="pane" id="busca" role="tabpanel" aria-labelledby="tab-busca" hidden>
-    <p class="lead">La app ya tiene menú. Ahora probamos si la gente encuentra las cosas en él, sin dibujos ni buscador.</p>
+    <p class="lead">Con lo que salió del card sorting, la app ya tiene menú. Ahora probamos si la gente encuentra las cosas en él, sin dibujos ni buscador.</p>
   <ol class="steps" id="steps" aria-label="Pasos">
     <li data-s="0"><span class="k">1</span>Instrucciones</li>
     <li data-s="1"><span class="k">2</span>Cinco búsquedas</li>
@@ -253,7 +253,7 @@ AISLES.forEach((a,i)=>{
   sign.innerHTML=a.unsure?'<span class="t"></span>':'<span class="n"></span><span class="t"></span>';
   if(!a.unsure) sign.querySelector(".n").textContent=String(i+1);
   sign.querySelector(".t").textContent=a.t;
-  sign.setAttribute("aria-label",(a.unsure?"":"Pasillo "+(i+1)+", ")+a.t+". Acomodar aquí el producto seleccionado");
+  sign.setAttribute("aria-label",(a.unsure?"":"Sección "+(i+1)+", ")+a.t+". Acomodar aquí el producto seleccionado");
   sign.addEventListener("click",()=>{ if(selected){ move(selected,a.id); } });
   const slot=document.createElement("div");slot.className="slot";
   const cnt=document.createElement("div");cnt.className="count";
@@ -398,7 +398,7 @@ function renderMine(){
   const m=$("mine"); m.replaceChildren();
   const unsure=order.filter(id=>place[id]==="nose").map(id=>NAME[id]);
   const p=document.createElement("p");
-  p.textContent=unsure.length?"Mandaste a la caja de dudas: "+unsure.join(", ")+". Eso dice que falta un pasillo o que el nombre no es claro.":"Acomodaste todo en algún pasillo. Revisa abajo si el grupo coincidió contigo.";
+  p.textContent=unsure.length?"Mandaste a la caja de dudas: "+unsure.join(", ")+". Eso dice que falta una sección en el menú o que su nombre no es claro.":"Acomodaste todo en alguna sección. Revisa abajo si el grupo coincidió contigo.";
   m.append(p);
 }
 
@@ -472,8 +472,8 @@ function intro(){
   const c=el("section","tcard"); c.style.setProperty("--c","var(--turquesa)");
   c.append(el("h2",null,"Así funciona"));
   const ol=el("ol","howto");
-  [["Lee el pedido.","Cada búsqueda empieza con una situación, como un papelito que te dan en la tienda.","var(--naranja)"],
-   ["Navega el menú.","Toca una sección para abrirla. Si te equivocas, puedes regresar: también eso cuenta.","var(--turquesa)"],
+  [["Lee el pedido.","Cada búsqueda empieza con una situación: algo que necesitas pedir en la app.","var(--naranja)"],
+   ["Navega el menú de la app.","Toca una sección para abrirla. Si te equivocas, puedes regresar: también eso cuenta.","var(--turquesa)"],
    ["Elige dónde lo buscarías.","Cuando llegues a una opción final, confirma con «Aquí lo buscaría». No hay buscador ni dibujos, solo texto.","var(--rosa)"],
    ["Mira qué pasó.","Al final ves tus resultados y, si se guardan, los del grupo.","var(--verde)"]
   ].forEach(([b,t,cc])=>{const li=el("li");li.style.setProperty("--c",cc);const d=el("div");d.append(el("b",null,b),el("span","muted",t));li.append(d);ol.append(li);});
